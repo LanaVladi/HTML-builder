@@ -1,19 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 
-const pathFolder = path.join(__dirname, "secret-folder");
-const pathFile = path.join(pathFolder, __filename);
-
-async function myReadDir (pathFolder) {
-  const filesName = await fs.promises.readdir(pathFolder);
-    for (let fileName of filesName) {
-    fs.stat(path.resolve('03-files-in-folder', "secret-folder", __filename), 
-    (err, fileSize) => {
-      fileSize = fileSize.size;
-      const extension = path.extname(fileName).replace('.', '');
-      fileName = fileName.split('.').shift();
-      console.log( `${fileName} - ${extension} - ${fileSize} bytes`);
-    })};
-   
-}
-myReadDir(pathFolder);
+fs.readdir(path.join(__dirname, "secret-folder"), { withFileTypes: true }, (error, files) => {
+    if (error) {
+        console.log(error);
+    }
+    files.filter(file => !file.isDirectory()).forEach(file => {
+        fs.stat(path.resolve('03-files-in-folder', "secret-folder", file.name), 
+        (error, fileStat) => {
+            if (error) {}
+            fileName = file.name.split('.').shift();
+            fileSize = fileStat.size;
+            const extension = path.extname(file.name).replace('.', '');
+            console.log(`${fileName} - ${extension} - ${fileSize} bytes`);
+        });
+    });
+});
