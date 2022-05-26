@@ -9,7 +9,7 @@ fs.readdir(path.join(__dirname, 'styles'), { withFileTypes: true }, (error, file
     files.forEach(file => {
         files.filter(file => file.isFile())
         if (path.extname(file.name) === '.css') {
-            fs.readFile(path.join(__dirname, 'styles', file.name), 'utf-8', (error, data) => {
+            fs.readFile(path.join(__dirname, 'styles', file.name), (error, data) => {
                 if (error) {}
                 bundle.write(data + '\n');
             });
