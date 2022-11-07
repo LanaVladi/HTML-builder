@@ -17,10 +17,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const input = fs.createReadStream(path.join(__dirname, 'text.txt'), 'utf-8');
+const pathToFile = path.join(__dirname, 'text.txt');
+
+const stream = fs.createReadStream(pathToFile, 'utf-8');
 
 let data = '';
 
-input.on('data', (chunk) => (data += chunk));
-input.on('end', () => console.log(data));
-input.on('error', (error) => console.log('Error', error.message));
+stream.on('data', (chunk) => (data += chunk));
+stream.on('end', () => console.log(data));
+stream.on('error', (error) => console.log('Error', error.message));
