@@ -2,8 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const process = require('process');
 
-fs.createWriteStream(path.join('02-write-file', 'destination.txt'));
-// создает файл 'destination.txt' в папке '02-write-file'
+const pathToFile = path.join(__dirname, 'destination.txt');
+
+fs.createWriteStream(pathToFile);
 
 const { stdin, stdout } = process;
 stdout.write('Good day! Please enter your text:\n');
@@ -17,11 +18,7 @@ stdin.on('data', (data) => {
     process.exit();
   }
 
-  fs.appendFile(
-    path.join('02-write-file', 'destination.txt'),
-    data,
-    function (error) {
-      if (error) throw error; // ошибка чтения файла, если есть
-    }
-  );
+  fs.appendFile(pathToFile, data, function (error) {
+    if (error) throw error;
+  });
 });
